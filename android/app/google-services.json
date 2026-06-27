@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "240206576426",
+    "project_id": "masjidku-capstone",
+    "storage_bucket": "masjidku-capstone.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240206576426:android:9e2522724ec8a86f9fbc53",
+        "android_client_info": {
+          "package_name": "com.example.masjidku"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnQYDDy-xwxAAtXJ-JtmjAjDqCruw4laU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240206576426:android:0711ffa7ac94a9a39fbc53",
+        "android_client_info": {
+          "package_name": "com.example.masjidz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnQYDDy-xwxAAtXJ-JtmjAjDqCruw4laU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
