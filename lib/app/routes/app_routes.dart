@@ -13,6 +13,7 @@ abstract class Routes {
   static const LAPORAN = _Paths.LAPORAN;
   static const DONASI = _Paths.DONASI;
   static const PROFILE = _Paths.PROFILE;
+  static const RIWAYAT_DONASI = _Paths.RIWAYAT_DONASI;
 }
 
 abstract class _Paths {
@@ -28,4 +29,5 @@ abstract class _Paths {
   static const LAPORAN = '/laporan';
   static const DONASI = '/donasi';
   static const PROFILE = '/profile';
+  static const RIWAYAT_DONASI = '/riwayat-donasi';
 }
