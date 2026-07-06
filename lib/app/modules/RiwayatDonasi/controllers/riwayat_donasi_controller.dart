@@ -1,28 +1,21 @@
-import 'package:get/get.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 
 class RiwayatDonasiController extends GetxController {
-  // Gunakan email user yang login (sesuaikan dengan cara kamu menyimpan user login)
-  final String userEmail = "albarabdullah99@gmail.com"; 
-  var riwayatList = <Map<String, dynamic>>[].obs;
+  FirebaseFirestore firestore = FirebaseFirestore.instance;
+  FirebaseAuth auth = FirebaseAuth.instance;
 
-  @override
-  void onInit() {
-    super.onInit();
-    fetchRiwayat();
-  }
+  // Gunakan Stream agar riwayat langsung update secara realtime
+  Stream<QuerySnapshot<Map<String, dynamic>>> streamRiwayat() {
+    // Ambil email user yang sedang login
+    String currentUserEmail = auth.currentUser?.email ?? "";
 
-  void fetchRiwayat() async {
-    try {
-      var snapshot = await FirebaseFirestore.instance
-          .collection('donasi')
-          .where('email', isEqualTo: userEmail) // Filter by email user
-          .orderBy('timestamp', descending: true)
-          .get();
-
-      riwayatList.value = snapshot.docs.map((doc) => doc.data()).toList();
-    } catch (e) {
-      Get.snackbar("Error", "Gagal memuat riwayat: $e");
-    }
+    // Tarik data dari koleksi 'donations' khusus untuk email ini
+    return firestore
+        .collection('donations')
+        .where('user_id', isEqualTo: currentUserEmail)
+        .orderBy('timestamp', descending: true) // Urutkan dari yang terbaru
+        .snapshots();
   }
 }

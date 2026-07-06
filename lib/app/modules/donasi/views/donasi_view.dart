@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import '../controllers/donasi_controller.dart';
 
 class DonasiView extends GetView<DonasiController> {
@@ -8,6 +9,9 @@ class DonasiView extends GetView<DonasiController> {
   @override
   Widget build(BuildContext context) {
     final primaryColor = Theme.of(context).primaryColor;
+    
+    // Format uang untuk menampilkan Rp
+    final formatUang = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
 
     return Scaffold(
       appBar: AppBar(
@@ -21,33 +25,81 @@ class DonasiView extends GetView<DonasiController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Banner/Card Informasi
+            // ==========================================
+            // KARTU BESAR: TOTAL DANA TERKUMPUL
+            // ==========================================
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
               decoration: BoxDecoration(
-                color: primaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: primaryColor.withOpacity(0.3)),
+                // Menggunakan gradien warna agar terlihat lebih premium
+                gradient: LinearGradient(
+                  colors: [primaryColor, primaryColor.withOpacity(0.75)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: primaryColor.withOpacity(0.4), 
+                    blurRadius: 12, 
+                    offset: const Offset(0, 6)
+                  )
+                ],
               ),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Mari Berinfaq", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: primaryColor)),
-                  const SizedBox(height: 5),
                   const Text(
-                    "Infaq dan sedekah Anda akan dialokasikan langsung untuk kemakmuran dan operasional kegiatan masjid.",
-                    style: TextStyle(fontSize: 14, color: Colors.black87),
+                    "Total Dana Terkumpul", 
+                    style: TextStyle(color: Colors.white70, fontSize: 16, fontWeight: FontWeight.w500)
                   ),
+                  const SizedBox(height: 8),
+                  Obx(() => Text(
+                    formatUang.format(controller.totalDonasiGlobal.value),
+                    style: const TextStyle(color: Colors.white, fontSize: 34, fontWeight: FontWeight.bold),
+                  )),
                 ],
               ),
             ),
             const SizedBox(height: 25),
 
-            const Text("Pilih Nominal Donasi Cepat", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 10),
+            // ==========================================
+            // KARTU KECIL: INFO INFAQ
+            // ==========================================
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: primaryColor.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: primaryColor.withOpacity(0.2)),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.volunteer_activism, color: primaryColor, size: 22),
+                      const SizedBox(width: 8),
+                      Text("Mari Berinfaq", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: primaryColor)),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  const Text(
+                    "Infaq dan sedekah Anda akan dialokasikan langsung untuk kemakmuran dan operasional kegiatan masjid.",
+                    style: TextStyle(fontSize: 14, color: Colors.black87, height: 1.4),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 30),
 
-            // Pilihan Nominal Instan
+            // ==========================================
+            // INPUT NOMINAL
+            // ==========================================
+            const Text("Pilih Nominal Donasi Cepat", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            const SizedBox(height: 12),
+
             GridView.count(
               crossAxisCount: 3,
               shrinkWrap: true,
@@ -75,7 +127,6 @@ class DonasiView extends GetView<DonasiController> {
             const Text("Atau Masukkan Nominal Manual (Rp)", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             const SizedBox(height: 10),
 
-            // Input TextField
             TextField(
               controller: controller.nominalController,
               keyboardType: TextInputType.number,
@@ -91,10 +142,9 @@ class DonasiView extends GetView<DonasiController> {
             ),
             const SizedBox(height: 35),
 
-            // Tombol Kirim / Bayar
             Obx(() => SizedBox(
                   width: double.infinity,
-                  height: 50,
+                  height: 55,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryColor,

@@ -65,7 +65,7 @@ class RegisterView extends GetView<AuthController> {
                     child: Obx(() => ElevatedButton(
                       onPressed: authC.isLoading.value 
                         ? null 
-                        : () => authC.sendRegisterOtp(nameC.text, emailC.text.trim(), passC.text),
+                        : () => authC.sendOtp(emailC.text.trim(), nameC.text, passC.text, true),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFF064635),
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

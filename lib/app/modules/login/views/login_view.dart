@@ -65,7 +65,7 @@ class LoginView extends GetView<AuthController> {
                   children: [
                     const Text("Password", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
                     GestureDetector(
-                      onTap: () => authC.sendRealOtp(emailC.text),
+                      onTap: () => authC.sendOtp(emailC.text.trim(), null, null, false),
                       child: const Text("Forgot Password?", style: TextStyle(color: Colors.teal, fontWeight: FontWeight.bold, fontSize: 12)),
                     ),
                   ],

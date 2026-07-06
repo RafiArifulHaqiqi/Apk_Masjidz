@@ -26,7 +26,7 @@ class ForgotPasswordView extends GetView<AuthController> {
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
-                onPressed: controller.isLoading.value ? null : () => controller.sendRealOtp(emailC.text),
+                onPressed: controller.isLoading.value ? null : () => controller.sendOtp(emailC.text.trim(), null, null, false),
                 style: ElevatedButton.styleFrom(backgroundColor: const Color(0xFF064635)),
                 child: controller.isLoading.value ? const CircularProgressIndicator(color: Colors.white) : const Text("KIRIM KODE OTP", style: TextStyle(color: Colors.white)),
               ),

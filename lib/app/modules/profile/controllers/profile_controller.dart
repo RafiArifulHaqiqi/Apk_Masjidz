@@ -1,34 +1,35 @@
 import 'package:get/get.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProfileController extends GetxController {
-  // Variabel reaktif untuk data profil
-  var userName = 'Hamba Allah'.obs;
-  var userEmail = 'memuat...'.obs;
+  var userName = '...'.obs;
+  var userEmail = '...'.obs;
+  var photoUrl = ''.obs;
 
   @override
   void onInit() {
     super.onInit();
-    loadUserData();
+    loadUserData(); 
   }
 
-  void loadUserData() {
-    // Nanti kamu bisa mengganti bagian ini dengan fungsi untuk
-    // mengambil data asli dari Firebase Auth / Google Sign-In
-    // Contoh dummy sementara:
-    userName.value = 'Albar Abdullah';
-    userEmail.value = 'albarabdullah99@gmail.com';
+  void loadUserData() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      userEmail.value = user.email ?? '';
+      var query = await FirebaseFirestore.instance.collection('users')
+          .where('email', isEqualTo: user.email).get();
+      if (query.docs.isNotEmpty) {
+        var data = query.docs.first.data();
+        userName.value = data['name'] ?? 'Jamaah Masjid';
+        photoUrl.value = data['photoUrl'] ?? '';
+      }
+    }
   }
 
-  void logout() {
-    // Logika untuk logout (misal: hapus token, sign out firebase)
-    // FirebaseAuth.instance.signOut();
-    
-    // Kembali ke halaman Login (sesuaikan nama rute login kamu)
-    Get.offAllNamed('/login'); 
-    Get.snackbar(
-      'Logout Sukses', 
-      'Anda telah keluar dari akun.',
-      snackPosition: SnackPosition.TOP,
-    );
+  void logout() async {
+    await FirebaseAuth.instance.signOut();
+    Get.offAllNamed('/login');
+    Get.snackbar('Logout', 'Anda telah keluar.');
   }
 }
